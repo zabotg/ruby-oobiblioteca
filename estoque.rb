@@ -10,23 +10,18 @@ class Estoque
       @livros.extend Contador
    end
 
-   def quantidade_de_vendas_por(produto, &campo)
-      @vendas.count {|venda| campo.call(venda) == campo.call(produto)}
+   def method_missing(nome)
+      matcher = nome.to_s.match "(.+)_que_mais_vendeu_por_(.+)"
+      if matcher
+         tipo = matcher[1]
+         campo = matcher[2].to_sym
+         que_mais_vendeu_por(tipo, &campo)
+      else
+         super
+      end
    end
-
-   def livro_que_mais_vendeu_por(&campo)
-      que_mais_vendeu_por("livro", &campo)
-   end
-
-   def revista_que_mais_vendeu_por(&campo)
-      que_mais_vendeu_por("revista", &campo)
-   end
-
-   def que_mais_vendeu_por(tipo, &campo)
-      @vendas.select {|l| l.tipo == tipo}.sort {|v1,v2|
-         quantidade_de_vendas_por(v1, &campo) <=>
-         quantidade_de_vendas_por(v2, &campo)
-      }.last
+   def respond_to?(nome)
+      nome.to_s.match("(.+)_que_mais_vendeu_por_(.+)") || super
    end
 
    def exporta_csv
@@ -57,5 +52,17 @@ class Estoque
 
    def maximo_necessario
       @livros.maximo_necessario
+   end
+
+   private
+   def quantidade_de_vendas_por(produto, &campo)
+      @vendas.count {|venda| campo.call(venda) == campo.call(produto)}
+   end
+
+   def que_mais_vendeu_por(tipo, &campo)
+      @vendas.select {|l| l.tipo == tipo}.sort {|v1,v2|
+         quantidade_de_vendas_por(v1, &campo) <=>
+         quantidade_de_vendas_por(v2, &campo)
+      }.last
    end
 end
