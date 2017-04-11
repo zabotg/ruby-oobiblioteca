@@ -14,28 +14,12 @@ class Estoque
       @vendas.count {|venda| campo.call(venda) == campo.call(produto)}
    end
 
-   def livro_que_mais_vendeu_por_titulo
-      que_mais_vendeu_por("livro", &:titulo)
+   def livro_que_mais_vendeu_por(&campo)
+      que_mais_vendeu_por("livro", &campo)
    end
 
-   def livro_que_mais_vendeu_por_ano
-      que_mais_vendeu_por("livro", &:ano_lancamento)
-   end
-
-   def livro_que_mais_vendeu_por_editora
-      que_mais_vendeu_por("livro", &:editora)
-   end
-
-   def revista_que_mais_vendeu_por_titulo
-      que_mais_vendeu_por("revista", &:titulo)
-   end
-
-   def revista_que_mais_vendeu_por_ano
-      que_mais_vendeu_por("revista", &:ano_lancamento)
-   end
-
-   def revista_que_mais_vendeu_por_editora
-      que_mais_vendeu_por("revista", &:editora)
+   def revista_que_mais_vendeu_por(&campo)
+      que_mais_vendeu_por("revista", &campo)
    end
 
    def que_mais_vendeu_por(tipo, &campo)
