@@ -1,11 +1,8 @@
-class Livro
+class EBook
    attr_reader :titulo, :preco, :ano_lancamento, :editora
-   def initialize(titulo, preco, ano_lancamento, possui_reimpressao,
-      editora, sobrecapa)
+   def initialize(titulo, preco, ano_lancamento, editora)
       @titulo = titulo
       @ano_lancamento = ano_lancamento
-      @possui_reimpressao = possui_reimpressao
-      @sobrecapa = sobrecapa
       @preco = calcula_preco(preco)
       @editora = editora
    end
@@ -15,11 +12,7 @@ class Livro
    end
 
    def matches?(query)
-      ["livro", "impresso"].include?(query)
-   end
-
-   def possui_reimpressao?
-      @possui_reimpressao
+      ["ebook", "digital"].include?(query)
    end
 
    private
